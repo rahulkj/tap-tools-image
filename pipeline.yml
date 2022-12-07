@@ -1,0 +1,68 @@
+---
+jobs:
+- name: build-image
+  public: true
+  serial: true
+  plan:
+  - in_parallel:
+    - get: schedule
+      trigger: true
+    - get: git-repo
+      trigger: true
+  - task: package-clis
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source: { repository: rjain/tap-image }
+      run:
+        path: sh
+        args:
+          - -exc
+          - |
+            cp -r tkgi git-repo/ci/tkgi
+            cp -r git-repo/* updated-repo/
+      inputs:
+      - name: git-repo
+      - name: tkgi
+      outputs:
+      - name: updated-repo
+  - put: docker-image
+    params:
+      build: updated-repo/ci
+
+resources:
+- name: schedule
+  type: time
+  icon: camera-timer
+  source:
+    interval: 24h
+    start: "12:00 AM"
+    stop: "11:59 PM"
+    location: America/Los_Angeles
+    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+
+- name: git-repo
+  type: git
+  icon: github
+  source:
+    uri: ((git_url))
+    branch: ((git_branch))
+    username: ((git_credentials.username))
+    password: ((git_credentials.password))
+
+- name: docker-image
+  type: docker-image
+  icon: docker
+  source:
+    email: ((docker_hub_email))
+    username: ((docker_hub_credentials.username))
+    password: ((docker_hub_credentials.password))
+    repository: ((docker_hub_repository))
+
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
