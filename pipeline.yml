@@ -14,17 +14,15 @@ jobs:
       platform: linux
       image_resource:
         type: registry-image
-        source: { repository: rjain/tap-image }
+        source: { repository: rjain/buildbox }
       run:
         path: sh
         args:
           - -exc
           - |
-            cp -r tkgi git-repo/ci/tkgi
             cp -r git-repo/* updated-repo/
       inputs:
       - name: git-repo
-      - name: tkgi
       outputs:
       - name: updated-repo
   - put: docker-image
