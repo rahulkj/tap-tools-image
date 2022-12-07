@@ -47,7 +47,7 @@ install_docker() {
 
     apt-get update
 
-    apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 }
 
 install_yq
