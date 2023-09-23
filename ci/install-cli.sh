@@ -16,7 +16,7 @@ get_latest_release() {
 
 install_jq() {
     echo 'Installing jq'
-    apt install jq
+    apt install -y jq
     echo "jq cli:" $(jq --version)
 }
 
