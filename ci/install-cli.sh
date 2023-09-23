@@ -15,18 +15,9 @@ get_latest_release() {
 }
 
 install_jq() {
-    log 'Installing yq'
-
-    get_latest_release "$REPO_YQ" "linux_amd64"
-
-    while read -r line; do
-      if [[ "$line" != *.tar.gz ]]; then
-        wget -qO "$OUTPUT"/yq "$line"
-        chmod +x "$OUTPUT"/yq
-      fi
-    done <<< "$DOWNLOAD_URL"
-
-    echo "yq cli:" $(yq --version)
+    echo 'Installing jq'
+    apt install jq
+    echo "jq cli:" $(jq --version)
 }
 
 install_carvel() {
@@ -44,15 +35,20 @@ install_kubectl() {
 
 install_yq() {
     echo "installing yq"
-    wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+    get_latest_release "$REPO_YQ" "linux_amd64"
 
-    chmod a+x /usr/local/bin/yq
+    while read -r line; do
+      if [[ "$line" != *.tar.gz ]]; then
+        wget -qO "$OUTPUT"/yq "$line"
+        chmod +x "$OUTPUT"/yq
+      fi
+    done <<< "$DOWNLOAD_URL"
 
-    yq --version
+    echo "yq cli:" $(yq --version)
 }
 
 install_kp() {
-    log 'Installing kp'
+    echo 'Installing kp'
 
     get_latest_release "$REPO_KP" "linux-amd64"
 
@@ -69,9 +65,9 @@ install_docker() {
     apt install docker.io -y
 }
 
+install_jq
 install_yq
+install_kp
 install_carvel
 install_kubectl
-install_yq
 install_docker
-install_kp
