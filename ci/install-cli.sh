@@ -53,8 +53,10 @@ install_kp() {
     get_latest_release "$REPO_KP" "linux-amd64"
 
     while read -r line; do
-        wget -qO "$OUTPUT"/kp "$line"
-        chmod +x "$OUTPUT"/kp
+        if [[ "$line" != *.sha256 ]]; then
+            wget -qO "$OUTPUT"/kp "$line"
+            chmod +x "$OUTPUT"/kp
+        fi
     done <<< "$DOWNLOAD_URL"
 
     echo "kq cli:" $(kq version)
