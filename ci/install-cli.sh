@@ -82,7 +82,7 @@ install_kp() {
         fi
     done <<< "$DOWNLOAD_URL"
 
-    echo "tanzu cli:" $(kq version)
+    echo "tanzu cli:" $(tanzu version)
 }
 
 install_docker() {
