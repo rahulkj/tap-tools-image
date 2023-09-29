@@ -60,7 +60,7 @@ install_kp() {
         fi
     done <<< "$DOWNLOAD_URL"
 
-    echo "kq cli:" $(kq version)
+    echo "kp cli:" $(kp version)
 }
 
 install_tanzu_cli() {
@@ -76,7 +76,7 @@ install_tanzu_cli() {
 
             CLI_PATH=$(find ./ -name tanzu-cli-linux_amd64)
 
-            mv ${CLI_PATH} "${OUTPUT}/tanzu"
+            mv "${CLI_PATH}" "${OUTPUT}/tanzu"
 
             chmod +x "${OUTPUT}/tanzu"
         fi
@@ -90,10 +90,10 @@ install_docker() {
     apt install docker.io -y
 }
 
+install_docker
 install_jq
 install_yq
 install_kp
 install_carvel
 install_kubectl
-install_docker
 install_tanzu_cli
