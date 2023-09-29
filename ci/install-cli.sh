@@ -5,6 +5,7 @@ export OUTPUT=/usr/local/bin
 
 REPO_YQ=mikefarah/yq
 REPO_KP=buildpacks-community/kpack-cli
+REPO_TANZU_CLI=vmware-tanzu/tanzu-cli
 
 apt upgrade
 
@@ -39,8 +40,8 @@ install_yq() {
 
     while read -r line; do
       if [[ "$line" != *.tar.gz ]]; then
-        wget -qO "$OUTPUT"/yq "$line"
-        chmod +x "$OUTPUT"/yq
+        wget -qO "${OUTPUT}"/yq "$line"
+        chmod +x "${OUTPUT}"/yq
       fi
     done <<< "$DOWNLOAD_URL"
 
@@ -54,12 +55,34 @@ install_kp() {
 
     while read -r line; do
         if [[ "$line" != *.sha256 ]]; then
-            wget -qO "$OUTPUT"/kp "$line"
-            chmod +x "$OUTPUT"/kp
+            wget -qO "${OUTPUT}"/kp "$line"
+            chmod +x "${OUTPUT}"/kp
         fi
     done <<< "$DOWNLOAD_URL"
 
     echo "kq cli:" $(kq version)
+}
+
+install_kp() {
+    echo 'Installing tanzu cli'
+
+    get_latest_release "$REPO_TANZU_CLI" "linux-amd64"
+
+    while read -r line; do
+        if [[ "$line" == *.tar.gz ]]; then
+            wget -qO tanzu-cli.tar.gz "$line"
+
+            tar -xzf tanzu-cli.tar.gz
+
+            CLI_PATH=$(find . -name tanzu-cli-linux_amd64)
+
+            mv ${CLI_PATH} "${OUTPUT}"/tanzu
+
+            chmod +x "${OUTPUT}"/tanzu
+        fi
+    done <<< "$DOWNLOAD_URL"
+
+    echo "tanzu cli:" $(kq version)
 }
 
 install_docker() {
@@ -73,3 +96,4 @@ install_kp
 install_carvel
 install_kubectl
 install_docker
+install_tanzu_cli
