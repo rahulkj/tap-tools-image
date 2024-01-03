@@ -35,7 +35,7 @@ resources:
   icon: camera-timer
   source:
     interval: 24h
-    start: "12:00 AM"
+    start: "12:50 AM"
     stop: "11:59 PM"
     location: America/Los_Angeles
     days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
