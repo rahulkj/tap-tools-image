@@ -79,6 +79,13 @@ install_tanzu_cli() {
             mv "${CLI_PATH}" "${OUTPUT}/tanzu"
 
             chmod +x "${OUTPUT}/tanzu"
+
+            export TANZU_CLI_CEIP_OPT_IN_PROMPT_ANSWER="yes"
+            export TANZU_CLI_NO_INIT=true
+
+            tanzu config eula accept
+            
+            tanzu plugin install --group vmware-tap/default:v${TAP_VERSION}
         fi
     done <<< "$DOWNLOAD_URL"
 

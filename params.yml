@@ -7,3 +7,6 @@ internal_registry:
   host: ((harbor_host))
   username: ((harbor_credentials.username))
   password: ((harbor_credentials.password))
+
+tap:
+  version: 1.12.1
