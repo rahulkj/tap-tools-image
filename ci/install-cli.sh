@@ -10,9 +10,9 @@ REPO_TANZU_CLI=vmware-tanzu/tanzu-cli
 apt upgrade
 
 get_latest_release() {
-    DOWNLOAD_URL=$(curl -L --silent "https://api.github.com/repos/$1/releases/latest" | \
-      jq -r \
-      --arg flavor $2 '.assets[] | select(.name | contains($flavor)) | .browser_download_url')
+    DOWNLOAD_URL=$(curl -L --silent "https://api.github.com/repos/$1/releases/latest" |
+        jq -r \
+            --arg flavor $2 '.assets[] | select(.name | contains($flavor)) | .browser_download_url')
 }
 
 install_jq() {
@@ -39,11 +39,11 @@ install_yq() {
     get_latest_release "$REPO_YQ" "linux_amd64"
 
     while read -r line; do
-      if [[ "$line" != *.tar.gz ]]; then
-        wget -qO "${OUTPUT}/yq" "$line"
-        chmod +x "${OUTPUT}/yq"
-      fi
-    done <<< "$DOWNLOAD_URL"
+        if [[ "$line" != *.tar.gz ]]; then
+            wget -qO "${OUTPUT}/yq" "$line"
+            chmod +x "${OUTPUT}/yq"
+        fi
+    done <<<"$DOWNLOAD_URL"
 
     echo "yq cli:" $(yq --version)
 }
@@ -58,7 +58,7 @@ install_kp() {
             wget -qO "${OUTPUT}/kp" "$line"
             chmod +x "${OUTPUT}/kp"
         fi
-    done <<< "$DOWNLOAD_URL"
+    done <<<"$DOWNLOAD_URL"
 
     echo "kp cli:" $(kp version)
 }
@@ -79,8 +79,15 @@ install_tanzu_cli() {
             mv "${CLI_PATH}" "${OUTPUT}/tanzu"
 
             chmod +x "${OUTPUT}/tanzu"
+
+            export TANZU_CLI_CEIP_OPT_IN_PROMPT_ANSWER="yes"
+
+            tanzu config eula accept
+
+            export TANZU_CLI_NO_INIT=true
+            tanzu plugin install --group vmware-tap/default:v${TAP_VERSION}
         fi
-    done <<< "$DOWNLOAD_URL"
+    done <<<"$DOWNLOAD_URL"
 
     echo "tanzu cli:" $(tanzu version)
 }

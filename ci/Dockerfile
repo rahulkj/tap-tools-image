@@ -4,6 +4,8 @@ LABEL maintainer_name="Rahul Jain"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
+ARG TAP_VERSION=$TAP_VERSION
+ENV TAP_VERSION=$TAP_VERSION
 
 ADD install-cli.sh /
 

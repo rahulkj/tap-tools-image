@@ -28,10 +28,14 @@ jobs:
   - in_parallel:
     - put: docker-image
       params:
+        build_args:
+          TAP_VERSION=((tap.version))
         build: updated-repo/ci
       get_params: {skip_download: true}
     - put: internal-registry
       params:
+        build_args:
+          TAP_VERSION=((tap.version))
         build: updated-repo/ci
       get_params: {skip_download: true}
 
