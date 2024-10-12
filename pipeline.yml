@@ -29,13 +29,19 @@ jobs:
     - put: docker-image
       params:
         build_args:
-          TAP_VERSION=((tap.version))
+          IMAGE: ((versions.docker_image))
+          MAINTAINER: ((versions.maintainer))
+          MAINTAINER_NAME: ((versions.maintainer_name))
+          TAP_VERSION: ((versions.tap))
         build: updated-repo/ci
       get_params: {skip_download: true}
     - put: internal-registry
       params:
         build_args:
-          TAP_VERSION=((tap.version))
+          IMAGE: ((versions.docker_image))
+          MAINTAINER: ((versions.maintainer))
+          MAINTAINER_NAME: ((versions.maintainer_name))
+          TAP_VERSION: ((versions.tap))
         build: updated-repo/ci
       get_params: {skip_download: true}
 

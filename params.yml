@@ -8,5 +8,10 @@ internal_registry:
   username: ((harbor_credentials.username))
   password: ((harbor_credentials.password))
 
-tap:
-  version: 1.12.1
+versions:
+  tap: 1.12.1
+  docker_image: ubuntu:24.10
+
+docker_image:
+  maintainer: "rahulkj@gmail.com"
+  maintainer_name: "Rahul Jain"
